@@ -1,72 +1,39 @@
 import React, { useEffect, useState } from "react";
 import Box from "./Box";
+import { RIGHT, LEFT } from "../../utils/const";
 
 const Home = () => {
-  const [boxItems, setBoxItems] = useState({
-    left: {
-      key: "left",
-      value: [],
-    },
-    right: {
-      key: "right",
-      value: [],
-    },
-  });
+  const [boxItems, setBoxItems] = useState({ left: [], right: [] });
 
   useEffect(() => {
     fetch("/data/fetch.json", { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
-        setBoxItems({
-          right: {
-            key: "right",
-            value: [],
-          },
-          left: {
-            key: "left",
-            value: [...data],
-          },
-        });
+        setBoxItems((prevItems) => ({ ...prevItems, left: data }));
       });
   }, []);
 
-  const handleBoxItemClick = (item, key) => {
-    if (key === "left") {
-      setBoxItems({
-        left: {
-          key: "left",
-          value: [...boxItems.left.value.filter((it) => it.tag !== item.tag)],
-        },
-        right: {
-          key: "right",
-          value: [...boxItems?.right?.value, item],
-        },
-      });
-    } else {
-      setBoxItems({
-        left: {
-          key: "left",
-          value: [...boxItems?.left?.value, item],
-        },
-        right: {
-          key: "right",
-          value: [...boxItems.right.value.filter((it) => it.tag !== item.tag)],
-        },
-      });
-    }
+  const handleBoxItemClick = (item, boxSide) => {
+    const oppositeBoxSide = boxSide === LEFT ? RIGHT : LEFT;
+    const newItems = boxItems[boxSide].filter((i) => i.id !== item.id);
+    setBoxItems((prevItems) => ({
+      ...prevItems,
+      [boxSide]: newItems,
+      [oppositeBoxSide]: [...prevItems[oppositeBoxSide], item],
+    }));
   };
 
   return (
     <div style={{ display: "flex", gap: "2rem" }}>
       <Box
         items={boxItems.left}
-        onItemClick={(item, key) => handleBoxItemClick(item, key)}
-        onItemRemove={(item) => handleBoxItemClick(item)}
+        onItemClick={(item) => handleBoxItemClick(item, LEFT)}
+        onItemRemove={(item) => handleBoxItemClick(item, LEFT)}
       />
       <Box
         items={boxItems.right}
-        onItemClick={(item, key) => handleBoxItemClick(item, key)}
-        onItemRemove={(item) => handleBoxItemClick(item)}
+        onItemClick={(item) => handleBoxItemClick(item, RIGHT)}
+        onItemRemove={(item) => handleBoxItemClick(item, RIGHT)}
       />
     </div>
   );
