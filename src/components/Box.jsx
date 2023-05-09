@@ -1,17 +1,17 @@
 import React from "react";
 
 const Box = ({ items, onItemClick }) => {
-  console.log(items);
   return (
     <div style={{ width: "400px", height: "800px", border: "1px solid black" }}>
-      {items.map((item) => (
-        <div key={item.id}>
-          {item.tag}
-          <button onClick={() => onItemClick(item)}>
-            <span>{">"}</span>
-          </button>
-        </div>
-      ))}
+      {items &&
+        items["value"].map((item) => (
+          <div key={item.id}>
+            {item.tag}
+            <button onClick={() => onItemClick(item, items["key"])}>
+              <span>{items?.key === "left" ? ">" : "<"}</span>
+            </button>
+          </div>
+        ))}
     </div>
   );
 };
