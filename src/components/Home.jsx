@@ -26,14 +26,14 @@ const Home = () => {
   return (
     <div style={{ display: "flex", gap: "2rem" }}>
       <Box
+        boxSide={LEFT}
         items={boxItems.left}
         onItemClick={(item) => handleBoxItemClick(item, LEFT)}
-        onItemRemove={(item) => handleBoxItemClick(item, LEFT)}
       />
       <Box
+        boxSide={RIGHT}
         items={boxItems.right}
         onItemClick={(item) => handleBoxItemClick(item, RIGHT)}
-        onItemRemove={(item) => handleBoxItemClick(item, RIGHT)}
       />
     </div>
   );
