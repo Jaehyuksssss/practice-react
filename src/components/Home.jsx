@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Box from "./Box";
-import { RIGHT, LEFT } from "../../utils/const";
+import { RIGHT, LEFT } from "../utils/const";
 
 const Home = () => {
   const [boxItems, setBoxItems] = useState({ left: [], right: [] });
